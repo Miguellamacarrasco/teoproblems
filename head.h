@@ -1,33 +1,40 @@
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 #ifndef head
 #define head
 
 
-template<typename T>
-class node
+template<typename vocabulary>
+struct node
 {
-    T data;
-    std::vector<std::pair<int w, node*>> adjacent;
+    int key;
+    std::vector<std::pair<vocabulary, node<vocabulary>*>> adjacent;
     node() {}
-    node(T n_data) {data = n_data;}    
+    node(int n_key) {key = n_key;}    
 };
 
-template<typename T>
-class automata
+template<typename vocabulary>
+struct automata
 {
-    node* initial_state;
-    std::<node*> final_states;
-    std::vector<node*> states;
+    node<vocabulary>* initial_state;
+    std::unordered_map<int, node<vocabulary>*> final_states;
+    std::unordered_map<int, node<vocabulary>*> states;
 
-    void add_state(T data)
+    void add_state(int key)
     {
-        node<T>* n_node = new node<T>(data);
-        states.push_back(n_node);
+        node<vocabulary>* n_node = new node<vocabulary>(key);
+        states.insert({key, n_node});
     }
-    void connect_states()
-    {
 
+    void connect_states(int key1, int key2, vocabulary t_input)
+    {
+        states[key1]->adjacent.push_back(std::pair<vocabulary,node<vocabulary>*>(t_input,states[key2]));
+    }
+    
+    void remove_state(int key)
+    {
+    
     }
 };
 
