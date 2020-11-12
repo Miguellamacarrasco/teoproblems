@@ -66,22 +66,18 @@ void states::output()
         cout<<"     Estado final";
 
 }
-
-
-//---------------------------
-void check(states *);
-//--------------------------
+void revision(states *);
 int main()
 {   states sta;
     char ch='0';
     cout<<"\nIngrese detalles del AFD : \n";
-    cout<<"\nIngrese numero de estados ";
+    cout<<"\nIngrese numero de estados :";
     cin>>n1;
     states state[NO_OF_STATES]={0,1,2,3,4,5,6,7,8,9};
     for(int i=0;i<n1;i++)
         state[i].input();
 
-    check(state);
+    revision(state);
 
     cout<<"        |    Inputs\n";
     cout<<"Estados |   ";
@@ -116,7 +112,7 @@ int main()
 
 
 
-int exists(int s[],int ref)
+int existe(int s[],int ref)
 {   states sta;
     for(int i=0;i<n1;i++)
         if(s[i]==ref)
@@ -125,7 +121,7 @@ int exists(int s[],int ref)
     return -1;
 }
 
-void check(states state[])
+void revision(states state[])
 {
     int array[NO_OF_STATES],temp,newgp[NO_OF_STATES],flag=0,count=2;
     for(int outerloop=0;outerloop<n1-2;outerloop++)
@@ -153,7 +149,7 @@ void check(states state[])
                 {
                     if(state[i].gp==state[k].gp)
                     {
-                        if((array[i]!=array[k]) && ( (flag==0) || (exists(newgp,array[k])==-1)) )
+                        if((array[i]!=array[k]) && ( (flag==0) || (existe(newgp,array[k])==-1)) )
                         {
                             state[k].gp = count;
                             count++;
@@ -163,7 +159,7 @@ void check(states state[])
                         }
                         else if(array[i]!=array[k])
                         {
-                            state[k].gp = state[exists(newgp,array[k])].gp;
+                            state[k].gp = state[existe(newgp,array[k])].gp;
                         }
                     }
                 }
