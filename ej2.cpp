@@ -3,7 +3,7 @@
 #include <vector>
 using namespace std;
 const int NO_OF_STATES = 10;
-int n1,n;
+int n1;
 class states
 {
 public:
@@ -20,8 +20,8 @@ public:
     {
         gp=0;
         sno=state_no;
-        ts = new int[n];
-        for(int i=0;i<n;i++)
+        ts = new int[2];
+        for(int i=0;i<2;i++)
             ts[i]=-1;
     }
     void input();
@@ -33,7 +33,7 @@ void states::input()
     char ch='0';
     cout<<"\nIngrese detalles de transicion para ";
     cout<<"estado q"<<sno<<" : \n";
-    for(int j=0;j<n;j++,ch++)
+    for(int j=0;j<2;j++,ch++)
     {
         cout<<"Estado al que va con input "<<ch<<" : q";
         cin>>ts[j];
@@ -51,9 +51,9 @@ void states::output()
     if(sno==-1){
         return;}
     cout<<"\n\n    q "<<sno<<"| - ";
-    for(int i=0;i<n;i++){
+    for(int i=0;i<2;i++){
         if(ts[i]!=-1){
-            cout<<"     q"<<ts[i];
+            cout<<"      q"<<ts[i];
             }
         else {
             cout << "    N/A";
@@ -75,8 +75,6 @@ int main()
 {   states sta;
     char ch='0';
     cout<<"\nIngrese detalles del AFD : \n";
-    cout<<"\nCuantos inputs? : ";
-    cin>>n;
     cout<<"\nIngrese numero de estados ";
     cin>>n1;
     states state[NO_OF_STATES]={0,1,2,3,4,5,6,7,8,9};
@@ -87,9 +85,9 @@ int main()
 
     cout<<"        |    Inputs\n";
     cout<<"Estados |   ";
-    for(int i=0;i<n;i++,ch++)          cout<<"      "<<ch;
+    for(int i=0;i<2;i++,ch++)          cout<<"      "<<ch;
     cout<<endl;
-    for(int i=0;i<n+3;i++)               cout<<"-----";
+    for(int i=0;i<5;i++)               cout<<"-----";
     for(int i=0;i<n1;i++)
         state[i].output();
     cout<<endl;
@@ -132,7 +130,7 @@ void check(states state[])
     int array[NO_OF_STATES],temp,newgp[NO_OF_STATES],flag=0,count=2;
     for(int outerloop=0;outerloop<n1-2;outerloop++)
     {
-        for(int j=0;j<n;j++)
+        for(int j=0;j<2;j++)
         {
             for(int z=0;z<NO_OF_STATES;z++)
                 array[z]=-1;
@@ -179,7 +177,7 @@ void check(states state[])
                 if(state[i].gp==state[j].gp)
                 {
                     for(int h=0;h<n1;h++)
-                        for(int z=0;z<n;z++)
+                        for(int z=0;z<2;z++)
                             if(state[h].ts[z]==state[j].sno)
                                 state[h].ts[z]=state[i].sno;
                     state[j].sno=-1;
