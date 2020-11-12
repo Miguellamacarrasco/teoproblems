@@ -34,7 +34,7 @@ struct automata
     node<vocabulary>* initial_state;
     std::unordered_map<int, node<vocabulary>*> final_states;
     std::unordered_map<int, node<vocabulary>*> states;
-    std::vector<vocabulary> possible_inputs = {'0','1','e'};
+    std::vector<vocabulary> possible_inputs = {'a','b','e'};
 
     void add_state(int key)
     {
@@ -80,6 +80,8 @@ struct automata
 
     void nfa_to_dfa(std::vector<vocabulary> possible)
     {
+
+        std::cout << '\n';
         std::vector<meta_node<vocabulary>*> tabla;
         std::vector<meta_node<vocabulary>*> needs_to_be_declared;
         meta_node<vocabulary>* zero_meta = new meta_node<vocabulary>;
@@ -97,6 +99,7 @@ struct automata
             }
             zero_meta->adjacent.insert({change,vector_of_change});
         }
+        
         needs_to_be_declared.push_back(zero_meta);
         int new_key = 1;
         while (!needs_to_be_declared.empty())
@@ -117,7 +120,6 @@ struct automata
                         }
                     }
                 }
-
 
 
 
@@ -195,13 +197,19 @@ struct automata
             }
         }
 
+        
+
         //Finally delete the new zero state and the void state
         remove_state(0);
         remove_state(1);
     }
     void Brzozowski()
     {
+        print();
+        std::cout << "Original" << '\n';
         invert();
+        print();
+        std::cout << "Inverted" << '\n';
         add_state(-1);
         for (auto final : final_states)
         {
@@ -210,8 +218,29 @@ struct automata
         final_states.clear();
         final_states.insert({initial_state->key,initial_state});
         initial_state = states[-1];
+         
+        print();
+        std::cout << "Added extra new state" << '\n';
         nfa_to_dfa(possible_inputs);
+        
+        print();
+        std::cout << "nfa_to_dfa" << '\n';
         invert();
+        print();
+        std::cout << "Inverted" << '\n';
+        add_state(-1);
+        for (auto final : final_states)
+        {
+            connect_states(-1,final.second->key,'e');
+        }
+        final_states.clear();
+        final_states.insert({initial_state->key,initial_state});
+        initial_state = states[-1];
+        print();
+        std::cout << "Added extra new state" << '\n';
+        nfa_to_dfa(possible_inputs);
+        print();
+        std::cout << "Final result" << '\n';
     }
     void invert()
     {
@@ -251,7 +280,7 @@ struct automata
             std::cout << "{";
             for (auto adj : estados.second->adjacent)
             {
-                std::cout << adj.second->key << ", ";
+                std::cout << adj.second->key << " " << adj.first << ", ";
             }
             std::cout << "} ";
         }
