@@ -3,25 +3,32 @@
 int main()
 {
     automata<char> new_automata;
-    new_automata.add_state(0);
-    new_automata.add_state(1);
-    new_automata.add_state(2);
-    new_automata.add_state(3);
-    new_automata.add_state(4);
-    new_automata.initial_state = new_automata.states[0];
-    new_automata.final_states.insert({0,new_automata.states[0]});
-    new_automata.final_states.insert({2,new_automata.states[2]});
-    new_automata.final_states.insert({4,new_automata.states[4]});
-    new_automata.connect_states(0,0,'a');
-    new_automata.connect_states(0,1,'b');
-    new_automata.connect_states(1,3,'b');
-    new_automata.connect_states(3,2,'a');
-    new_automata.connect_states(2,2,'a');
-    new_automata.connect_states(3,3,'b');
-    new_automata.connect_states(1,2,'a');
-    new_automata.connect_states(2,4,'b');
-    new_automata.connect_states(4,4,'a');
-    new_automata.connect_states(4,4,'b');
+    int number_of_states = 0;
+    std::cin >> number_of_states;
+    for (int i = 0 ; i < number_of_states; i++)
+    {
+        new_automata.add_state(i);
+    }
+    int l = 0;
+    int final_states = 0;
+    std::cin >> l;
+    new_automata.initial_state = new_automata.states[l];
+    std::cin >> final_states;
+    for (int i = 0; i < final_states; i++)
+    {
+        int temp = 0;
+        std::cin >> temp;
+        new_automata.final_states.insert({temp,new_automata.states[temp]});
+    }
+    for (int i = 0; i < 2*number_of_states; i++)
+    {
+        int x, y, t;
+        std::cin >> x;
+        std::cin >> t;
+        std::cin >> y;
+        new_automata.connect_states(x,y,char(t + 'a'));
+
+    }
     new_automata.Brzozowski();
     
 }

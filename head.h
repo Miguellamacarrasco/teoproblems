@@ -261,7 +261,6 @@ struct automata
         {
             state.second->adjacent = temp_states[state.second->key];
         }
-
     }
 
     void print()
